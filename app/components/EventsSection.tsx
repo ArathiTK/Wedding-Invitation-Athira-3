@@ -22,24 +22,6 @@ export default function EventsSection() {
         address: WEDDING.ceremony.address,
       }),
     },
-    {
-      name: "Reception",
-      date: WEDDING.reception.date,
-      time: WEDDING.reception.time,
-      venue: WEDDING.reception.venue,
-      address: WEDDING.reception.address,
-      cardBg: "url('/assets/bg.png')",
-      cardBgPosition: "center",
-      googleMapsUrl: WEDDING.reception.googleMapsUrl,
-      calUrl: makeGoogleCalendarUrl({
-        title: "Abhiram TK & Athira K — Wedding Reception",
-        isoDate: WEDDING.reception.isoDate,
-        startTime: WEDDING.reception.startTime,
-        endTime: WEDDING.reception.endTime,
-        venue: WEDDING.reception.venue,
-        address: WEDDING.reception.address,
-      }),
-    },
   ];
 
   return (
@@ -47,18 +29,18 @@ export default function EventsSection() {
       <div className="max-w-xl mx-auto w-full rounded-2xl px-4 py-[clamp(1.25rem,4vh,2rem)] sm:px-6"
         style={{ background: "rgba(255,255,255,0.08)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,249,243,0.15)" }}>
         <AnimateOnScroll>
-          <p className="heading-display text-xs text-[#fff9f3] text-center mb-[clamp(0.5rem,2vh,0.75rem)]">Events</p>
+          <p className="heading-display text-xs text-[#fff9f3] text-center mb-[clamp(1rem,4vh,1.75rem)]">Event</p>
         </AnimateOnScroll>
 
         <div className="flex flex-col gap-[clamp(0.5rem,2vh,1rem)]">
           {events.map(({ name, date, time, venue, address, cardBg, cardBgPosition, googleMapsUrl }, i) => (
             <AnimateOnScroll key={name} delay={0.1 + i * 0.1}>
               <div className="rounded-lg p-4">
-                <h3 className="heading-gold heading-display text-center mb-[clamp(0.35rem,1.5vh,0.6rem)]"
+                <h3 className="heading-gold heading-display text-center mb-[clamp(0.75rem,3.5vh,1.5rem)]"
                   style={{ fontSize: "clamp(1.1rem, 4.5vw, 1.5rem)", letterSpacing: "0.1em", color: "#fff9f3" }}>
                   {name}
                 </h3>
-                <div className="space-y-[clamp(0.35rem,1.5vh,0.6rem)]">
+                <div className="space-y-[clamp(0.9rem,4vh,1.75rem)]">
                   {[
                     {
                       label: "Date", value: date,
@@ -88,14 +70,14 @@ export default function EventsSection() {
                       ),
                     },
                   ].map(({ label, value, icon, sub }) => (
-                    <div key={label} className={`flex justify-center gap-2.5 ${sub ? "items-start" : "items-center"}`}>
+                    <div key={label} className={`flex justify-center gap-3 ${sub ? "items-start" : "items-center"}`}>
                       <div className="flex-shrink-0" style={sub ? { marginTop: "0.15em" } : undefined}>{icon}</div>
                       <div className="text-center">
                         <p className="text-[#fff9f3] text-base" style={{ fontFamily: "var(--font-seasons)" }}>{value}</p>
-                        {sub && <p className="text-xs text-[#fff9f3]/60 mt-0.5">{sub}</p>}
+                        {sub && <p className="text-xs text-[#fff9f3]/60 mt-1">{sub}</p>}
                         {label === "Venue" && (
                           <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer"
-                            className="inline-block text-xs text-[#fff9f3] underline mt-1 hover:text-[#fff9f3] transition-colors">
+                            className="inline-block text-xs text-[#fff9f3] underline mt-2 hover:text-[#fff9f3] transition-colors">
                             Get Directions
                           </a>
                         )}
