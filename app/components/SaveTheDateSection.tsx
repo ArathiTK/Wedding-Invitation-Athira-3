@@ -17,7 +17,9 @@ export default function SaveTheDateSection() {
 
     const tryPlay = () => v.play().catch(() => {});
 
-    // Wait for section 2 to be buffered before starting section 1 playback
+    // Play immediately so there's no gap after the envelope closes;
+    // section2ready is just a retry signal in case the first attempt missed.
+    tryPlay();
     const onSection2Ready = () => tryPlay();
     document.addEventListener("section2ready", onSection2Ready, { once: true });
     const onGesture = () => {

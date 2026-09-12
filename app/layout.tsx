@@ -25,6 +25,22 @@ const siteDescription =
   process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
   "Join us to celebrate the wedding of Abhiram TK & Athira K";
 
+const isAthiraFirst = (process.env.NEXT_PUBLIC_SITE_URL || "").includes(
+  "wedding-invitation-athira-abhiram"
+);
+
+const ogImagePath = isAthiraFirst
+  ? "/assets/og-image-athira.jpg"
+  : "/assets/og-image-abhiram.jpg";
+
+const ogImage = {
+  url: ogImagePath,
+  width: 1200,
+  height: 630,
+  type: "image/jpeg",
+  alt: "Athira K & Abhiram TK — Wedding Invitation",
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ||
@@ -36,11 +52,13 @@ export const metadata: Metadata = {
     title: siteTitle,
     description: siteDescription,
     type: "website",
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
+    images: [ogImagePath],
   },
 };
 
