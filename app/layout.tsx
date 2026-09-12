@@ -1,5 +1,6 @@
 ﻿import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -25,42 +26,48 @@ const siteDescription =
   process.env.NEXT_PUBLIC_SITE_DESCRIPTION ||
   "Join us to celebrate the wedding of Abhiram TK & Athira K";
 
-const isAthiraFirst = (process.env.NEXT_PUBLIC_SITE_URL || "").includes(
-  "wedding-invitation-athira-abhiram"
-);
+export async function generateMetadata(): Promise<Metadata> {
+  // Derive the real request domain instead of trusting a hardcoded/env
+  // default — a mismatch there sends OG crawlers to the wrong deployment
+  // URL and the link preview silently fails to load.
+  const host = (await headers()).get("host") || "";
+  const protocol = host.startsWith("localhost") || host.startsWith("127.")
+    ? "http"
+    : "https";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || `${protocol}://${host}`;
 
-const ogImagePath = isAthiraFirst
-  ? "/assets/og-image-athira.jpg"
-  : "/assets/og-image-abhiram.jpg";
+  const isAthiraFirst = siteUrl.includes("wedding-invitation-athira-abhiram");
 
-const ogImage = {
-  url: ogImagePath,
-  width: 1200,
-  height: 630,
-  type: "image/jpeg",
-  alt: "Athira K & Abhiram TK — Wedding Invitation",
-};
+  const ogImagePath = isAthiraFirst
+    ? "/assets/og-image-athira.jpg"
+    : "/assets/og-image-abhiram.jpg";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ||
-      "https://wedding-invitation-abhiram-athira.vercel.app"
-  ),
-  title: siteTitle,
-  description: siteDescription,
-  openGraph: {
+  const ogImage = {
+    url: ogImagePath,
+    width: 1200,
+    height: 630,
+    type: "image/jpeg",
+    alt: "Athira K & Abhiram TK — Wedding Invitation",
+  };
+
+  return {
+    metadataBase: new URL(siteUrl),
     title: siteTitle,
     description: siteDescription,
-    type: "website",
-    images: [ogImage],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: siteTitle,
-    description: siteDescription,
-    images: [ogImagePath],
-  },
-};
+    openGraph: {
+      title: siteTitle,
+      description: siteDescription,
+      type: "website",
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: siteTitle,
+      description: siteDescription,
+      images: [ogImagePath],
+    },
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
